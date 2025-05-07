@@ -1,7 +1,6 @@
 package it.book.bookshelf.f.Model;
 
-import java.awt.Image;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,12 +15,22 @@ public class Libro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable=false)
     private String titolo;
+    @Column(nullable=false)
     private String autore;
+    @Column(nullable=false)
     private String genere;
+    @Column(nullable=true)
     private String isbn;
+    @Column(nullable=true)
     private String recensione;
-    private Image immagine;
+    @Column(nullable=true)
+    private String immagine;
+    @Column(nullable=true)
+    private float prezzo;
+    @Column(nullable=true)
+    private String descrizione;
 
 
 
@@ -112,15 +121,29 @@ public class Libro {
     /**
      * @return String return the immagine
      */
-    public Image getImmagine() {
+    public String getImmagine() {
         return immagine;
     }
 
     /**
      * @param immagine the immagine to set
      */
-    public void setImmagine(Image immagine) {
+    public void setImmagine(String immagine) {
         this.immagine = immagine;
+    }
+
+    public float getPrezzo() {
+        return prezzo;
+    }
+    public void setPrezzo(float prezzo) {
+        this.prezzo = prezzo;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
     }
 
 }

@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-BookshelfApplication<bookshelf>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "it.book.bookshelf.BookshelfApplication",
+            "projectName": "bookshelf",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
