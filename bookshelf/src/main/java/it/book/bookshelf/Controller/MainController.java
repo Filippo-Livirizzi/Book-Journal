@@ -53,8 +53,13 @@ public class MainController {
     @GetMapping("/show/{id}")
     public String show (@PathVariable("id") Integer id, Model model){
         model.addAttribute("libro", libroRepo.findById(id).get()); // Fetch the book by ID and add it to the model
-        return "/bookshelf/show"; // Return the view name for showing the book details
+        return "show"; // Return the view name for showing the book details
+    }
 
+    @GetMapping("/delete/{id}")
+    public String delete (@PathVariable("id") Integer id, Model model){
+        libroRepo.deleteById(id); // Delete the book by ID from the repository
+        return "redirect:/bookshelf"; // Redirect to the index page after deletion
     }
 
 }

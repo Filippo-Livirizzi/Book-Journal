@@ -23,6 +23,7 @@
                     <th>Immagine</th>
                     <th>Prezzo</th>
                     <th>Scopri di più</th>
+                    <th>Elimina dalla mia libreria</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,6 +36,7 @@
                     <td><img th:src="${libri.immagine}" alt="Copertina"/></td>
                     <td th:text="${libri.prezzo} + '€'"></td>
                     <td><a th:href="@{|/bookshelf/show/${libri.id}|}" class="btn btn-info" type="button">Info</a></td>
+                    <td><a th:href="@{|/bookshelf/delete/${libri.id}|}" class="btn btn-danger" type="button">Elimina</a></td>
                     
                 <!--<td><a class="btn btn-secondary" th:href="@{/bookshelf/show/{id}(id=${libro.id})}">Info</a></td>--> 
                 </tr>
