@@ -11,25 +11,30 @@ import jakarta.persistence.Table;
 @Table(name = "book")
 @Entity
 public class Libro {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    
     @Column(nullable=false)
     private String titolo;
+    
     @Column(nullable=false)
     private String autore;
+    
     @Column(nullable=false)
     private String genere;
-    @Column(nullable=true)
+    
     private String isbn;
-    @Column(nullable=true)
+    
     private String recensione;
-    @Column(nullable=true)
+    
     private String immagine;
-    @Column(nullable=true)
-    private float prezzo;
-    @Column(nullable=true)
+    
+    @Column(nullable=false)
+    private Float prezzo;
+    
     private String descrizione;
 
 
@@ -132,10 +137,10 @@ public class Libro {
         this.immagine = immagine;
     }
 
-    public float getPrezzo() {
+    public Float getPrezzo() {
         return prezzo;
     }
-    public void setPrezzo(float prezzo) {
+    public void setPrezzo(Float prezzo) {
         this.prezzo = prezzo;
     }
 

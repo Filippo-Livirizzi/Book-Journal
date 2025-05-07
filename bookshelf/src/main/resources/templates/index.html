@@ -32,10 +32,11 @@
                     <td th:text="${libri.genere}"></td>
                     <td th:text="${libri.isbn}"></td>
                     <td th:text="${libri.recensione}"></td>
-                    <td><img th:src="${libri.immagine}" alt="Copertina"/>
-                    </td>
-                    <td th:text="${libri.prezzo}"></td>
-                    <td><a class="btn btn-secondary" th:href="@{/bookshelf/show}">Info</a></td>
+                    <td><img th:src="${libri.immagine}" alt="Copertina"/></td>
+                    <td th:text="${libri.prezzo} + '€'"></td>
+                    <td><a th:href="@{|/bookshelf/show/${libri.id}|}" class="btn btn-info" type="button">Info</a></td>
+                    
+                <!--<td><a class="btn btn-secondary" th:href="@{/bookshelf/show/{id}(id=${libro.id})}">Info</a></td>--> 
                 </tr>
             </tbody>
         </table>

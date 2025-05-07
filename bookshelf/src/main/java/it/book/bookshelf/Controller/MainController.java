@@ -34,16 +34,16 @@ public class MainController {
 
     @GetMapping("/create")
     public String create (Model model) {
-        model.addAttribute("libro", new Libro()); // Add a new Libro object to the model for the form
+        model.addAttribute("libri", new Libro()); // Add a new Libro object to the model for the form
 
-        return "/bookshelf/create"; // Return the view name for creating a new book
+        return "create"; // Return the view name for creating a new book
     }
 
     @PostMapping("/create")
     public String store( @Valid @ModelAttribute("libro") Libro libroform, BindingResult bindingresult, Model model) {
         
         if (bindingresult.hasErrors()) {
-            return "/bookshelf/create"; // If there are validation errors, return to the create form
+            return "create"; // If there are validation errors, return to the create form
         }
         libroRepo.save(libroform); // Save the new book to the repository
         
@@ -51,9 +51,9 @@ public class MainController {
     }
 
     @GetMapping("/show/{id}")
-    public String show(@PathVariable("id") Integer id, Model model){
-        model.addAttribute("libro", libroRepo.findById(id)); // Fetch the book by ID and add it to the model
-        return null;
+    public String show (@PathVariable("id") Integer id, Model model){
+        model.addAttribute("libro", libroRepo.findById(id).get()); // Fetch the book by ID and add it to the model
+        return "/bookshelf/show"; // Return the view name for showing the book details
 
     }
 
