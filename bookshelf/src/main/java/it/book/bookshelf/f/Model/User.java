@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 
-@Entity 
+@Entity
 public class User {
 
     @Id
@@ -19,59 +19,52 @@ public class User {
     @NotBlank
     private String password;
 
-    @ManyToMany (fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    
 
-    /**
-     * @return Integer return the id
-     */
+
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     * @return String return the username
-     */
     public String getUsername() {
         return username;
     }
 
-    /**
-     * @param username the username to set
-     */
     public void setUsername(String username) {
         this.username = username;
     }
 
-    /**
-     * @return String return the password
-     */
     public String getPassword() {
         return password;
     }
 
-    /**
-     * @param password the password to set
-     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+
+
+
     /**
-     * @return Set<Role> return the roles
+     * @return Set<Role> return the role
      */
     public Set<Role> getRoles() {
         return roles;
     }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(Set<Role> roles) {
+        this.roles = roles;
+    }
+
 
     /**
      * @param roles the roles to set
@@ -79,5 +72,7 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+
 
 }

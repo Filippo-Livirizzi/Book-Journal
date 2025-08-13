@@ -3,6 +3,8 @@ package it.book.bookshelf.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,14 +15,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import it.book.bookshelf.Repository.LibroRepository;
+import it.book.bookshelf.Repository.Userrepository;
+import it.book.bookshelf.Repository.user_bookRepository;
 import it.book.bookshelf.f.Model.Libro;
+import it.book.bookshelf.f.Model.User;
+import it.book.bookshelf.f.Model.user_book;
 import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/bookshelf") // Base URL for the controller
 public class MainController {
+
     @Autowired
-    private LibroRepository libroRepo; // Assuming you have a repository for the Libro entity
+    private LibroRepository libroRepo;
+    @Autowired
+    private Userrepository userRepo; // Assuming you have a repository for the User entity
+    @Autowired
+    private user_bookRepository userbookREPO; // Assuming you have a repository for the Libro entity
 
     @GetMapping
     public String index(Model model) {
@@ -37,12 +48,23 @@ public class MainController {
     }
 
     @PostMapping("/create")
-    public String store(@Valid @ModelAttribute("libro") Libro libroform, BindingResult bindingresult, Model model) {
+    public String store(@Valid @ModelAttribute("libro") Libro libroform, BindingResult bindingresult, Model model, @AuthenticationPrincipal UserDetails UserDetails) {
 
         if (bindingresult.hasErrors()) {
             return "create"; // If there are validation errors, return to the create form
         }
         libroRepo.save(libroform); // Save the new book to the repository
+
+        if (UserDetails != null) {
+            User user = userRepo.findByUsername(UserDetails.getUsername())
+                    .orElseThrow();
+            user_book relazione = new user_book(); // Create a new user-book relationship
+            relazione.setUser(user); // Set the user in the relationship
+            relazione.setLibro(libroform); // Set the book in the relationship
+            relazione.setStato("da leggere"); // Set the initial state of the book
+            userbookREPO.save(relazione); // Save the user-book relationship to the repository
+
+        }
 
         return "redirect:/bookshelf"; // Redirect to the index page after successful creation
     }
@@ -60,19 +82,40 @@ public class MainController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id, Model model) {
-        Libro libro = libroRepo.findById(id).get(); // Fetch the book by ID
-        model.addAttribute("libri", libro); // Add the book to the model for editing
+    public String edit(@PathVariable("id") Integer id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+
+       
+        if(userDetails == null) {
+            throw new RuntimeException("utente non autenticato"); // Redirect to login if user is not authenticated
+        }
+        User user = userRepo.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("utente non trovato")); // Create a new User object 
+
+        user_book userbook = userbookREPO.findByUser_IdAndLibro_Id(user.getId(), id).orElseThrow(() -> new RuntimeException("libro non trovato")); // Fetch the user-book relationship by user ID and book ID
+
+        model.addAttribute("userbook", userbook);
         return "edit"; // Return the view name for editing the book
     }
 
     @PostMapping("/edit/{id}")
-        public String update (@Valid @ModelAttribute("libri") Libro libroform, BindingResult bindingresult, Model model){
+        public String update ( @PathVariable("id") Integer id,
+            @Valid @ModelAttribute("userbookForm") user_book userbookForm, BindingResult bindingResult, @AuthenticationPrincipal UserDetails userDetails, Model model){
 
-            if (bindingresult.hasErrors()) {
+            if(bindingResult.hasErrors()){
                 return "edit"; // If there are validation errors, return to the edit form
             }
-            libroRepo.save(libroform); // Save the updated book to the repository
+
+            //recupero utente autenticato
+            User user = userRepo.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("utente non trovato")); // Fetch the user by username
+           
+            user_book userBook = userbookREPO.findByUser_IdAndLibro_Id(user.getId(), id).orElseThrow(() -> new RuntimeException("libro non trovato")); // Fetch the user-book relationship by user ID and book ID
+            
+            
+
+            userbookForm.setVoto(userbookForm.getVoto());
+            userbookForm.setRecensione(userbookForm.getRecensione()); // Update the book in the user-book relationship
+            userbookForm.setStato(userbookForm.getStato()); // Update the state of the book in the user-book relationship
+
+            userbookREPO.save(userBook);
             
             return "redirect:/bookshelf"; // Redirect to the index page after successful update
         }

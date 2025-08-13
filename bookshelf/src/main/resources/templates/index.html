@@ -20,17 +20,16 @@
                     <img th:src="${libri.immagine}" id="coverPreview" class="card-img-top">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${libri.titolo}"></h5>
-                        <p class="card-text" th:text="${libri.descrizione}"></p>
+                        <p class="card-text" th:text="${libri.trama}"></p>
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" th:text="${libri.autore}"></li>
-                        <li class="list-group-item" th:text="${libri.prezzo} + '€'"></li>
                     </ul>
                     <div class="card-body">
                         <a th:href="@{|/bookshelf/show/${libri.id}|}" class="card-link btn btn-info">Info</a>
                         <a th:href="@{|/bookshelf/edit/${libri.id}|}" class="card-link btn btn-warning">Modifica</a>
                     </div>
-                    <a th:href="@{|/bookshelf/delete/${libri.id}|}" class="btn btn-danger" style="width:max-content;"
+                    <a th:href="@{|/bookshelf/delete/${libri.id}|}" class="btn btn-danger" style="width:max-content"
                         type="button">Elimina</a>
                 </div>
             </div>

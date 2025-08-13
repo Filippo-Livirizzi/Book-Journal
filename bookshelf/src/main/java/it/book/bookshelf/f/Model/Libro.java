@@ -7,35 +7,28 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
 @Table(name = "book")
 @Entity
 public class Libro {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String titolo;
-    
-    @Column(nullable=false)
+
+    @Column(nullable = false)
     private String autore;
-    
-    @Column(nullable=false)
+
+    @Column(nullable = false)
     private String genere;
-    
+
     private String isbn;
-    
-    private String recensione;
-    
+
     private String immagine;
-    
-    @Column(nullable=false)
-    private Float prezzo;
-    
-    private String descrizione;
+
+    private String trama;
 
 
 
@@ -110,20 +103,6 @@ public class Libro {
     }
 
     /**
-     * @return String return the recensione
-     */
-    public String getRecensione() {
-        return recensione;
-    }
-
-    /**
-     * @param recensione the recensione to set
-     */
-    public void setRecensione(String recensione) {
-        this.recensione = recensione;
-    }
-
-    /**
      * @return String return the immagine
      */
     public String getImmagine() {
@@ -137,18 +116,24 @@ public class Libro {
         this.immagine = immagine;
     }
 
-    public Float getPrezzo() {
-        return prezzo;
-    }
-    public void setPrezzo(Float prezzo) {
-        this.prezzo = prezzo;
+
+
+
+    /**
+     * @return String return the trama
+     */
+    public String getTrama() {
+        return trama;
     }
 
-    public String getDescrizione() {
-        return descrizione;
+    /**
+     * @param trama the trama to set
+     */
+    public void setTrama(String trama) {
+        this.trama = trama;
     }
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
-    }
+
+
+   
 
 }
