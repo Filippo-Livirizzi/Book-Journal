@@ -12,26 +12,27 @@
 <body>
     <div class="container">
       <form th:action="@{|/bookshelf/edit/${userbook.libro.id}|}" id="userbookForm" method="post" th:object="${userbook}"> 
-            <h1 class="py-5" th:text="*{libro.titolo}"></h1>
+           
+        <h1 class="py-5" th:text="*{libro.titolo}"></h1>
+
             <div class="row">
                 <h3>Valuta</h2>
                 <div class="col-12 ">
                     
-                        <input type="hidden" id="voto" name="bookId" value="123" />
-                        <input type="number" id="voto" name="voto" min="1" max="5" />
+                        <input type="number" th:field="*{voto}" id="voto" class="form-control" min="1" max="5" />
                 </div>
 
                 <h3>Scrivi una recensione</h3>
                 <div class="col-12">
-                    <textarea id="recensione" name="recensione"></textarea>
+                    <textarea id="recensione" th:field="*{recensione}" name="recensione"></textarea>
                 </div>
 
                 <h3>Stato di lettura</h3>
                 <div class="col-12">
-                    <select id="stato" name="stato">
-                        <option value="letto">Letto</option>
-                        <option value="da leggere">Da leggere</option>
-                        <option value="in corso">In corso</option>
+                    <select th:field="*{stato}" id="stato" name="stato">
+                        <option value="LETTO">Letto</option>
+                        <option value="DA_LEGGERE">Da leggere</option>
+                        <option value="IN_CORSO">In corso</option>
                     </select>
 
 

@@ -70,8 +70,22 @@ public class MainController {
     }
 
     @GetMapping("/show/{id}")
-    public String show(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("libro", libroRepo.findById(id).get()); // Fetch the book by ID and add it to the model
+    public String show(@PathVariable("id") Integer id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+
+        Libro libro = libroRepo.findById(id).orElseThrow(() -> new RuntimeException("libro non trovato")); // Fetch the book by ID
+        model.addAttribute("libro", libro); // Fetch the book by ID and add it to the model
+        
+            // recensione personale (se utente loggato)
+    if (userDetails != null) {
+        User user = userRepo.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("utente non trovato"));
+        user_book userbook = userbookREPO.findByUser_IdAndLibro_Id(user.getId(), id).orElse(null);
+        model.addAttribute("userbook", userbook); // può essere null
+    }
+        // tutte le recensioni per il libro
+    List<user_book> recensioni = userbookREPO.findByLibro_Id(id); // implementa questo metodo nel repo
+    model.addAttribute("recensioni", recensioni);
+        
+        
         return "show"; // Return the view name for showing the book details
     }
 
@@ -98,7 +112,7 @@ public class MainController {
 
     @PostMapping("/edit/{id}")
         public String update ( @PathVariable("id") Integer id,
-            @Valid @ModelAttribute("userbookForm") user_book userbookForm, BindingResult bindingResult, @AuthenticationPrincipal UserDetails userDetails, Model model){
+            @Valid @ModelAttribute("userbook") user_book userbookForm, BindingResult bindingResult, @AuthenticationPrincipal UserDetails userDetails, Model model){
 
             if(bindingResult.hasErrors()){
                 return "edit"; // If there are validation errors, return to the edit form
